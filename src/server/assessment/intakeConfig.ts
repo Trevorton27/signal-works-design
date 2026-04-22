@@ -1,7 +1,7 @@
 /**
  * Intake Assessment Configuration - Expanded 27-Step Version
  *
- * TokuWebDev Intake Assessment
+ * Signal Works Design Intake Assessment
  * Total Estimated Time: 55–60 minutes
  * Skill Dimensions: 8 foundational categories with expanded question coverage
  */

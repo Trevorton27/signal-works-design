@@ -5,7 +5,7 @@ import NavBar from '@/modules/common/NavBar';
 import ClientProviders from '@/components/ClientProviders';
 
 export const metadata: Metadata = {
-  title: 'TokuWebDev',
+  title: 'Signal Works Design',
   description: 'Online school of application design, programming and AI engineering',
 };
 
@@ -22,7 +22,7 @@ export default function RootLayout({
             dangerouslySetInnerHTML={{
               __html: `
                 try {
-                  const theme = localStorage.getItem('tokuwebdev-theme') || 'dark';
+                  const theme = localStorage.getItem('signal-works-theme') || 'dark';
                   if (theme === 'dark') {
                     document.documentElement.classList.add('dark');
                   }

@@ -1,8 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || '';
 
 export default function Home() {
   const { t } = useLanguage();
@@ -28,12 +29,12 @@ export default function Home() {
             {t('home.heroSupporting')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/assessment/intake"
+            <a
+              href={`${APP_URL}/assessment/intake`}
               className="px-8 py-4 bg-white text-indigo-700 rounded-lg font-bold hover:bg-indigo-50 transition shadow-lg"
             >
               {t('home.heroCta')}
-            </Link>
+            </a>
             <a
               href="#how-it-works"
               className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-bold hover:bg-white/10 transition"
@@ -623,12 +624,12 @@ export default function Home() {
               </ul>
             </div>
 
-            <Link
-              href="/assessment/intake"
+            <a
+              href={`${APP_URL}/assessment/intake`}
               className="block w-full text-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-bold hover:from-indigo-700 hover:to-purple-700 transition shadow-lg"
             >
               {t('home.pricingCta')}
-            </Link>
+            </a>
           </div>
         </div>
       </section>

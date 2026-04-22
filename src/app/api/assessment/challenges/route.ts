@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { listChallenges } from '@/server/assessment/challengeService';
 import { logger } from '@/lib/logger';
+import { requireAuth } from '@/lib/auth';
 import type { ChallengeFilters } from '@/lib/types';
 
 export async function GET(request: NextRequest) {
   try {
+    await requireAuth();
+
     const { searchParams } = new URL(request.url);
 
     const filters: ChallengeFilters = {};
@@ -40,6 +43,9 @@ export async function GET(request: NextRequest) {
       data: challenges,
     });
   } catch (error) {
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
     logger.error('GET /api/assessment/challenges failed', error);
     return NextResponse.json(
       { success: false, error: 'Failed to fetch challenges' },

@@ -1,6 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { useSessionTracking } from '@/hooks/useSessionTracking';
 import Link from 'next/link';
@@ -10,11 +12,59 @@ import CalendarEvents from '@/components/calendar/CalendarEvents';
 import ReviewQueue from '@/components/reviews/ReviewQueue';
 
 export default function InstructorDashboard() {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
   const { t } = useLanguage();
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
   // Track user session activity
   useSessionTracking();
+
+  useEffect(() => {
+    async function checkAccess() {
+      if (!isLoaded) return;
+
+      if (!user) {
+        router.push('/sign-in');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/auth/me');
+        const data = await response.json();
+
+        if (!data.success || !data.user) {
+          router.push('/sign-in');
+          return;
+        }
+
+        if (data.user.role === 'STUDENT') {
+          router.push('/student');
+          return;
+        }
+
+        // INSTRUCTOR and ADMIN may access this page
+        if (data.user.role !== 'INSTRUCTOR' && data.user.role !== 'ADMIN') {
+          router.push('/');
+          return;
+        }
+
+        setCheckingAuth(false);
+      } catch {
+        router.push('/');
+      }
+    }
+
+    checkAccess();
+  }, [user, isLoaded, router]);
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
+      </div>
+    );
+  }
 
   const instructorName = user?.firstName || user?.fullName || user?.username || 'Instructor';
 

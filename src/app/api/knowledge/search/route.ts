@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { searchKnowledge } from '@/server/knowledge/knowledgeService';
 import { logger } from '@/lib/logger';
+import { requireAuth } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
+    await requireAuth();
+
     const body = await request.json();
     const { query, filters, limit } = body;
 
@@ -24,6 +27,9 @@ export async function POST(request: NextRequest) {
       data: results,
     });
   } catch (error) {
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
     logger.error('POST /api/knowledge/search failed', error);
     return NextResponse.json(
       { success: false, error: 'Failed to search knowledge base' },

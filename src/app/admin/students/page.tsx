@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface Student {
   id: string;
@@ -19,6 +20,7 @@ interface Student {
     progress: number;
   } | null;
   assessmentLevel: string;
+  hasCompletedAssessment: boolean;
   _count: {
     enrollments: number;
     attempts: number;
@@ -26,6 +28,7 @@ interface Student {
 }
 
 export default function StudentManagement() {
+  const router = useRouter();
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -352,25 +355,29 @@ export default function StudentManagement() {
                         </span>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-center">
-                        <Link
-                          href={`/admin/${student.name || student.email.split('@')[0]}/assessments`}
-                          className="inline-flex items-center px-2 py-1 border border-purple-300 dark:border-purple-700 rounded-md text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-colors text-xs"
-                        >
-                          <svg
-                            className="w-4 h-4 mr-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                        {student.hasCompletedAssessment ? (
+                          <Link
+                            href={`/admin/${student.name || student.email.split('@')[0]}/assessments`}
+                            className="inline-flex items-center px-2 py-1 border border-purple-300 dark:border-purple-700 rounded-md text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-colors text-xs"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-                            />
-                          </svg>
-                          View
-                        </Link>
+                            <svg
+                              className="w-4 h-4 mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                              />
+                            </svg>
+                            View
+                          </Link>
+                        ) : (
+                          <span className="text-xs text-gray-400 dark:text-gray-500">Not complete</span>
+                        )}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-center">
                         {student.roadmapDocumentId ? (
@@ -456,30 +463,31 @@ export default function StudentManagement() {
                         />
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-center">
-                        <button
-                          onClick={() => handleEditDates(student)}
-                          disabled={!student.currentEnrollment}
-                          className={`inline-flex items-center px-2 py-1 border rounded-md text-xs transition-colors ${
-                            student.currentEnrollment
-                              ? 'border-green-300 dark:border-green-700 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30'
-                              : 'border-gray-300 dark:border-gray-700 text-gray-400 dark:text-gray-600 cursor-not-allowed'
-                          }`}
-                        >
-                          <svg
-                            className="w-4 h-4 mr-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                        <div className="flex items-center justify-center gap-2">
+                          <button
+                            onClick={() => router.push(`/admin/students/${student.id}/dashboard`)}
+                            className="inline-flex items-center px-2 py-1 border border-indigo-300 dark:border-indigo-700 rounded-md text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors text-xs"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                          </svg>
-                          Edit Dates
-                        </button>
+                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            Dashboard
+                          </button>
+                          <button
+                            onClick={() => handleEditDates(student)}
+                            disabled={!student.currentEnrollment}
+                            className={`inline-flex items-center px-2 py-1 border rounded-md text-xs transition-colors ${
+                              student.currentEnrollment
+                                ? 'border-green-300 dark:border-green-700 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30'
+                                : 'border-gray-300 dark:border-gray-700 text-gray-400 dark:text-gray-600 cursor-not-allowed'
+                            }`}
+                          >
+                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            Edit Dates
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))

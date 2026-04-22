@@ -164,7 +164,15 @@ export default function CodeStep({ config, onSubmit, previousAnswer, isSubmittin
         )}
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          disabled={isSubmitting}
+          onClick={() => onSubmit({ code: config.starterCode, _noIdea: true })}
+          className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-hover transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          I have no idea. That's why I want to learn this stuff.
+        </button>
         <button
           type="submit"
           disabled={!hasCode || isSubmitting}

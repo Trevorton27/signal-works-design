@@ -14,12 +14,11 @@ import { logger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
   try {
-    // Optional: Add authorization check
     const authHeader = request.headers.get('authorization');
     const cronSecret = process.env.CRON_SECRET;
 
-    // If CRON_SECRET is set, verify it
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+    // CRON_SECRET must always be set and must match — never publicly accessible
+    if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

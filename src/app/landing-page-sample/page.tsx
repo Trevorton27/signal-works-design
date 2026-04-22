@@ -438,7 +438,7 @@ export default function LandingPageSample() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">TokuWebDev</h3>
+              <h3 className="text-white font-bold text-lg mb-4">Signal Works Design</h3>
               <p className="text-sm">
                 {t('home.footerTagline')}
               </p>

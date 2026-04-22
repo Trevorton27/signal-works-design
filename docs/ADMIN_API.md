@@ -33,6 +33,7 @@ Response:
         "avatarUrl": null,
         "createdAt": "2025-01-01T00:00:00Z",
         "updatedAt": "2025-01-01T00:00:00Z",
+        "hasCompletedAssessment": true,
         "_count": {
           "enrollments": 5,
           "attempts": 20,
@@ -49,6 +50,8 @@ Response:
   }
 }
 ```
+
+> **Note:** `hasCompletedAssessment` is `true` when the student has at least one `AssessmentSession` with `sessionType: 'INTAKE'` and `status: 'COMPLETED'`. It is derived via a batch query and is separate from `_count.attempts` (which tracks coding-challenge `Attempt` records, not intake sessions).
 
 ### Get User Details
 **GET** `/api/admin/users/:userId`
@@ -173,6 +176,77 @@ Body (all fields optional):
 
 ### Delete Lesson
 **DELETE** `/api/admin/lessons/:lessonId`
+
+---
+
+---
+
+## Student Dashboard Overview
+
+### Get Student Overview
+**GET** `/api/admin/students/[studentId]/overview`
+
+**Params:** `studentId` = Clerk user ID (resolved internally to DB user ID)
+
+**Purpose:** Returns all data needed to render the admin student dashboard in a single request.
+
+Response:
+```json
+{
+  "success": true,
+  "data": {
+    "student": {
+      "dbId": "cuid_abc",
+      "clerkId": "user_clerk_abc",
+      "name": "Trevor M",
+      "email": "spiral272@gmail.com",
+      "role": "STUDENT",
+      "adminNotes": "Strong CSS, needs backend work.",
+      "roadmapDocumentId": "1BxiMVs0..."
+    },
+    "enrollment": {
+      "id": "enroll_123",
+      "courseTitle": "Full-Stack Bootcamp",
+      "startDate": "2025-01-01T00:00:00Z",
+      "finishDate": "2025-06-01T00:00:00Z",
+      "progress": 42
+    },
+    "sessions": [
+      {
+        "assessmentNumber": 1,
+        "id": "session_abc",
+        "status": "COMPLETED",
+        "startedAt": "2025-03-01T00:00:00Z",
+        "completedAt": "2025-03-01T01:00:00Z",
+        "responseCount": 28,
+        "averageScore": 82
+      }
+    ],
+    "roadmap": [
+      {
+        "id": "item_abc",
+        "title": "HTML & CSS Fundamentals",
+        "description": "...",
+        "itemType": "COURSE",
+        "status": "COMPLETED",
+        "phase": 1,
+        "order": 1,
+        "estimatedHours": 20
+      }
+    ],
+    "skills": [
+      {
+        "skillKey": "css_layout",
+        "mastery": 0.87,
+        "confidence": 0.92,
+        "attempts": 6
+      }
+    ]
+  }
+}
+```
+
+All data is fetched in parallel via `Promise.all`. Session average scores are computed from `AssessmentResponse.gradeResult.score` fields.
 
 ---
 

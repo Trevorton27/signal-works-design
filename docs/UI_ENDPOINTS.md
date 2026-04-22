@@ -113,8 +113,19 @@ Routes accessible without authentication or available to all users.
 - **Navigation:**
   - Back button (to previous steps)
   - Forward/Next button
-  - Can't skip required steps
+  - **"Skip for now →"** button on every step — marks the step as skipped and moves forward; skipped steps can be returned to later
   - Session persistence (resume if interrupted)
+
+- **Skip & Review Flow:**
+  - Skipped steps are tracked with a badge in the navigation footer
+  - When reaching the last step, if any skipped steps remain, a review modal appears
+  - Student can choose to "Go back & answer" skipped steps or "View results anyway"
+  - Answering a previously skipped step removes it from the skipped list
+
+- **"No Idea" Option (Code Challenges):**
+  - Code challenge steps include a secondary button: "I have no idea. That's why I want to learn this stuff."
+  - Submits a `_noIdea` sentinel answer, recorded with zero score and encouraging feedback
+  - Allows the student to honestly indicate zero experience without leaving the step blank
 
 - **Real-time Feedback:**
   - Immediate grading for some step types
@@ -131,6 +142,8 @@ Routes accessible without authentication or available to all users.
 - Resume in-progress assessment
 - Navigate between steps
 - Submit answers for each step
+- Skip a step and return to it later
+- Indicate "no idea" on code challenges
 - View summary and skill profile
 - Restart assessment if needed
 
@@ -839,10 +852,10 @@ Routes accessible to users with the `ADMIN` role. All admin routes require authe
   4. **Start Date**: Enrollment start date
   5. **Finish Date**: Expected completion date
   6. **Assessment Level**: Current proficiency (Beginner, Intermediate, etc.)
-  7. **Assessment Results**: View detailed scores
+  7. **Assessment Results**: "View" link if student has completed the intake assessment; "Not complete" label otherwise. Completion is detected via `AssessmentSession` (not `Attempt`).
   8. **Roadmap Document**: Google Docs document ID
   9. **Admin Notes**: Private notes about student
-  10. **Actions**: Edit, delete, view profile
+  10. **Actions**: Dashboard button (links to `/admin/students/[studentId]/dashboard`) + Edit Dates button
 
 - **Assessment Results Viewer:**
   - Modal or expandable section
@@ -873,7 +886,8 @@ Routes accessible to users with the `ADMIN` role. All admin routes require authe
 **User Actions:**
 - Search for students
 - View student list
-- View assessment results
+- View assessment results (if completed)
+- Open student dashboard (full read/write access)
 - Assign roadmap documents (Google Docs)
 - Edit enrollment dates
 - Add/edit admin notes
@@ -883,6 +897,60 @@ Routes accessible to users with the `ADMIN` role. All admin routes require authe
 **Integration:**
 - Google Docs API for roadmap document preview
 - Real-time updates on save
+
+---
+
+### `/admin/students/[studentId]/dashboard` - Admin Student Dashboard
+**File:** `src/app/admin/students/[studentId]/dashboard/page.tsx`
+**Access:** Authenticated admins only
+**Params:** `studentId` = Clerk user ID
+
+**Purpose:** Comprehensive, single-page admin view of an individual student with full read and write access.
+
+**Sections:**
+
+- **Stats Row:**
+  - Enrollment progress percentage
+  - Assessment sessions count
+  - Roadmap items count
+  - Top skill mastery
+
+- **Enrollment Card:**
+  - Enrolled course name
+  - Start and finish dates
+  - Progress bar
+
+- **Assessment Sessions:**
+  - List of all intake assessment sessions (most recent first)
+  - Status (COMPLETED, IN_PROGRESS, etc.)
+  - Response count
+  - Average score percentage
+  - Link to detailed results
+
+- **Learning Roadmap:**
+  - All roadmap items grouped by phase and order
+  - Item type, status badge, estimated hours
+
+- **Top Skills:**
+  - Up to 10 highest-mastery skills
+  - Mastery bar visualization
+  - Confidence and attempt count
+
+- **Roadmap Document:**
+  - Link to assigned Google Doc (if set)
+  - Falls back to "No roadmap document assigned"
+
+- **Admin Notes:**
+  - Editable textarea
+  - Save button with success/error feedback
+  - `PUT /api/admin/students/[studentId]/notes` on save
+
+**Data Source:** `GET /api/admin/students/[studentId]/overview`
+
+**User Actions:**
+- Review full student progress at a glance
+- Navigate to detailed assessment results
+- Edit and save admin notes
 
 ---
 
@@ -1252,7 +1320,8 @@ INSTRUCTOR ROUTES (/instructor) [Requires INSTRUCTOR role]
 ADMIN ROUTES (/admin) [Requires ADMIN role]
 ├── /admin                              Platform dashboard
 ├── /admin/students                     Student management
-│   └── /admin/students/[studentId]/roadmap  Student roadmap view
+│   ├── /admin/students/[studentId]/dashboard  Full student dashboard (read/write)
+│   └── /admin/students/[studentId]/roadmap    Student roadmap view
 ├── /admin/[username]/roadmap           Alt student roadmap (by username)
 ├── /admin/[username]/assessments       Assessment results summary
 │   └── /admin/[username]/assessments/[assessmentNumber]  Detailed results
@@ -1390,8 +1459,10 @@ Key API endpoints called by UI routes:
 - `POST /api/assessment/projects/recommend` - Get project recommendations
 
 ### Students (Admin)
-- `GET /api/admin/students` - List students
+- `GET /api/admin/users` - List students (includes `hasCompletedAssessment` flag)
+- `GET /api/admin/students/[studentId]/overview` - Full student dashboard data (enrollment, sessions, roadmap, skills)
 - `PUT /api/admin/students/[id]/roadmap-document` - Assign roadmap doc
+- `PUT /api/admin/students/[studentId]/notes` - Update admin notes
 - `GET /api/admin/students/[id]/assessment-results` - Get results
 
 ### Roadmap

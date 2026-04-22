@@ -52,6 +52,8 @@ export default function IntakeAssessmentPage() {
   const [estimatedMinutes, setEstimatedMinutes] = useState(0);
 
   const [lastResult, setLastResult] = useState<SubmitAnswerResponse | null>(null);
+  const [skippedStepIds, setSkippedStepIds] = useState<string[]>([]);
+  const [showSkippedReview, setShowSkippedReview] = useState(false);
 
   // Initialize session
   useEffect(() => {
@@ -84,12 +86,22 @@ export default function IntakeAssessmentPage() {
     setState('submitting');
     setError(null);
 
+    // If this step was previously skipped and now being answered, remove from skipped list
+    if (!answer._skipped && !answer._noIdea) {
+      setSkippedStepIds((prev) => prev.filter((id) => id !== currentStep.id));
+    }
+
     try {
       const result = await submitStepAnswer(sessionId, currentStep.id, answer);
       setLastResult(result);
 
       if (result.isComplete) {
-        setState('complete');
+        if (skippedStepIds.filter((id) => id !== currentStep.id).length > 0) {
+          setShowSkippedReview(true);
+          setState('active');
+        } else {
+          setState('complete');
+        }
       } else if (result.nextStep) {
         setCurrentStep(result.nextStep);
         setProgress(result.progress);
@@ -106,6 +118,15 @@ export default function IntakeAssessmentPage() {
       setState('active');
     }
   }, [sessionId, currentStep]);
+
+  // Handle skip — must be declared after handleSubmit
+  const handleSkip = useCallback(async () => {
+    if (!sessionId || !currentStep || state === 'submitting') return;
+    setSkippedStepIds((prev) =>
+      prev.includes(currentStep.id) ? prev : [...prev, currentStep.id]
+    );
+    await handleSubmit({ _skipped: true });
+  }, [sessionId, currentStep, state, handleSubmit]);
 
   // Handle going back
   const handleBack = useCallback(async () => {
@@ -300,9 +321,46 @@ export default function IntakeAssessmentPage() {
           {renderStep()}
         </div>
 
+        {/* Skipped Questions Review Modal */}
+        {showSkippedReview && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white dark:bg-dark-card rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-200 dark:border-dark-border">
+              <div className="text-center mb-4">
+                <div className="text-3xl mb-2">🔖</div>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                  You skipped {skippedStepIds.length} question{skippedStepIds.length !== 1 ? 's' : ''}
+                </h2>
+                <p className="text-gray-600 dark:text-gray-300 mt-2 text-sm">
+                  Would you like to go back and answer them before viewing your results?
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={async () => {
+                    setShowSkippedReview(false);
+                    await handleBack();
+                  }}
+                  className="flex-1 px-4 py-2 bg-indigo-600 dark:bg-purple-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-purple-700 font-medium transition"
+                >
+                  Go back & answer
+                </button>
+                <button
+                  onClick={() => {
+                    setShowSkippedReview(false);
+                    setState('complete');
+                  }}
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-dark-border text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-hover font-medium transition"
+                >
+                  View results anyway
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Navigation */}
         {currentStep?.kind !== 'SUMMARY' && (
-          <div className="mt-6 flex justify-between">
+          <div className="mt-6 flex justify-between items-center">
             <button
               onClick={handleBack}
               disabled={!canGoBack || state === 'submitting'}
@@ -313,11 +371,27 @@ export default function IntakeAssessmentPage() {
             >
               {t('assessment.back')}
             </button>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              {t('assessment.stepOf')
-                .replace('{current}', String(Math.round((progress / 100) * totalSteps)))
-                .replace('{total}', String(totalSteps))}
+
+            <div className="flex items-center gap-4">
+              {skippedStepIds.length > 0 && (
+                <span className="text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-full border border-amber-200 dark:border-amber-800">
+                  {skippedStepIds.length} skipped
+                </span>
+              )}
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {t('assessment.stepOf')
+                  .replace('{current}', String(Math.round((progress / 100) * totalSteps)))
+                  .replace('{total}', String(totalSteps))}
+              </span>
             </div>
+
+            <button
+              onClick={handleSkip}
+              disabled={state === 'submitting'}
+              className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-hover rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Skip for now →
+            </button>
           </div>
         )}
       </div>

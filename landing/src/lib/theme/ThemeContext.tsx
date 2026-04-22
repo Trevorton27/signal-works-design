@@ -18,7 +18,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('dark');
   const [mounted, setMounted] = useState(false);
 
-  // Initialize theme from localStorage or system preference
   useEffect(() => {
     setMounted(true);
     const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
@@ -31,10 +30,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Apply theme class to document
   useEffect(() => {
     if (!mounted) return;
-
     const root = document.documentElement;
     if (theme === 'dark') {
       root.classList.add('dark');

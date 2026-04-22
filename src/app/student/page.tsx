@@ -1,6 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { useSessionTracking } from '@/hooks/useSessionTracking';
 import ProjectSummary from '@/modules/student/components/ProjectSummary';
@@ -16,19 +18,61 @@ import GitHubActivity from '@/modules/student/components/GitHubActivity';
 import StudentReviewStatus from '@/components/reviews/StudentReviewStatus';
 
 export default function StudentDashboard() {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
   const { t } = useLanguage();
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
   // Track user session activity
   useSessionTracking();
 
+  useEffect(() => {
+    async function checkAccess() {
+      if (!isLoaded) return;
+
+      if (!user) {
+        router.push('/sign-in');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/auth/me');
+        const data = await response.json();
+
+        if (!data.success || !data.user) {
+          router.push('/sign-in');
+          return;
+        }
+
+        if (data.user.role === 'ADMIN') {
+          router.push('/admin');
+          return;
+        }
+
+        if (data.user.role === 'INSTRUCTOR') {
+          router.push('/instructor');
+          return;
+        }
+
+        setCheckingAuth(false);
+      } catch {
+        router.push('/');
+      }
+    }
+
+    checkAccess();
+  }, [user, isLoaded, router]);
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
+      </div>
+    );
+  }
+
   // Get user's first name, full name, or username
   const userName = user?.firstName || user?.fullName || user?.username || 'Student';
-
-  // TODO: Fetch all dashboard data in parallel using Promise.all() or React Query
-  // TODO: Add loading states for each section
-  // TODO: Add error boundaries for graceful error handling
-  // TODO: Implement real-time updates via WebSocket for notifications
 
   return (
     <OnboardingCheck>

@@ -122,23 +122,23 @@ export default function QuickNav() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-      <h2 className="text-xl font-bold text-gray-900 mb-4">{t('student.quickActions')}</h2>
+    <div className="bg-white dark:bg-dark-card rounded-xl shadow-md p-6 border border-gray-100 dark:border-dark-border">
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">{t('student.quickActions')}</h2>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         {shortcuts.map((shortcut) => (
           <Link
             key={shortcut.id}
             href={shortcut.link}
-            className="group bg-gray-50 hover:bg-gray-100 rounded-lg p-4 transition-all border border-gray-200 hover:border-gray-300 hover:shadow-md"
+            className="group bg-gray-50 dark:bg-dark-surface hover:bg-gray-100 dark:hover:bg-dark-hover rounded-lg p-4 transition-all border border-gray-200 dark:border-dark-border hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-md"
           >
             <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-3 text-white transition-colors ${getColorClasses(shortcut.color)}`}>
               {shortcut.icon}
             </div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-1">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
               {t(`student.${shortcut.nameKey}`)}
             </h3>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               {t(`student.${shortcut.descriptionKey}`)}
             </p>
           </Link>

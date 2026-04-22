@@ -111,6 +111,17 @@ export async function GET(request: NextRequest) {
     });
     const attemptStatsMap = new Map(attemptStats.map(s => [s.userId, s]));
 
+    // Batch fetch completed assessment sessions for students
+    const completedSessions = await prisma.assessmentSession.findMany({
+      where: {
+        userId: { in: studentIds },
+        sessionType: 'INTAKE',
+        status: 'COMPLETED',
+      },
+      select: { userId: true },
+    });
+    const completedSessionUserIds = new Set(completedSessions.map(s => s.userId));
+
     // Filter and transform Clerk users
     let users = clerkUsers.data.map((clerkUser) => {
       const userRole = clerkUser.publicMetadata?.role as string || 'STUDENT';
@@ -194,6 +205,7 @@ export async function GET(request: NextRequest) {
         enrolledStudents,
         currentEnrollment,
         assessmentLevel,
+        hasCompletedAssessment: dbUser ? completedSessionUserIds.has(dbUser.id) : false,
       };
     });
 

@@ -249,6 +249,62 @@ export async function submitStepAnswer(
       throw new Error(`Step not found: ${stepId}`);
     }
 
+    // Short-circuit for skipped steps and "no idea" submissions
+    const isSkipped = answer && answer._skipped === true;
+    const isNoIdea = answer && answer._noIdea === true;
+
+    if (isSkipped || isNoIdea) {
+      const gradeResult: GradeResult = {
+        score: 0,
+        passed: false,
+        feedback: isSkipped
+          ? 'Skipped — come back to answer this later.'
+          : "No idea submitted — that's what we're here for!",
+        details: { skipped: isSkipped, noIdea: isNoIdea },
+        skillScores: {},
+      };
+
+      await prisma.assessmentResponse.upsert({
+        where: { sessionId_stepId: { sessionId, stepId } },
+        create: {
+          sessionId,
+          stepId,
+          stepKind: stepConfig.kind,
+          rawAnswer: answer,
+          gradeResult: gradeResult as any,
+          skillUpdates: [],
+        },
+        update: {
+          rawAnswer: answer,
+          gradeResult: gradeResult as any,
+          skillUpdates: [],
+        },
+      });
+
+      let nextStep = getNextStep(stepId);
+      const isComplete = isLastStep(stepId) || nextStep?.kind === 'SUMMARY';
+
+      if (isComplete) {
+        await prisma.assessmentSession.update({
+          where: { id: sessionId },
+          data: { status: 'COMPLETED', currentStep: 'summary', completedAt: new Date() },
+        });
+      } else if (nextStep) {
+        await prisma.assessmentSession.update({
+          where: { id: sessionId },
+          data: { currentStep: nextStep.id },
+        });
+      }
+
+      return {
+        gradeResult,
+        skillUpdates: [],
+        nextStep: isComplete ? null : nextStep,
+        isComplete,
+        progress: getStepProgress(nextStep?.id || stepId),
+      };
+    }
+
     // Grade the answer
     const gradeResult = await gradeStep(stepConfig, answer, session.userId);
 
