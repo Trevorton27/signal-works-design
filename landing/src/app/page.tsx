@@ -547,11 +547,26 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {[
-              { name: 'Yuki T.', role: 'Frontend Developer', quote: 'The two-stage assessment showed me exactly what I needed to learn. No more wasted time on tutorials that didn\'t apply to my goals.' },
-              { name: 'Marcus L.', role: 'Career Changer', quote: 'Coming from a non-technical background, the personalized roadmap and instructor support made all the difference. I landed my first dev role in 6 months.' },
-              { name: 'Hana S.', role: 'Full-Stack Engineer', quote: 'The hybrid model is genius. I get the structure of live sessions and the flexibility of AI practice — both in English and Japanese.' },
+              {
+                name: 'Kevin Bisner',
+                role: 'Full Stack Developer',
+                linkedin: 'https://www.linkedin.com/in/kevinbisner/',
+                quote: 'Working with Trevor was awesome. Being new in the field of software development I needed a knowledgeable and communicative mentor who could really help me improve my skills. Trevor was exactly that. His code reviews of my projects made in SDMM showed me how to write functional, effective, and efficient code. I\'m a much better developer because of him. He is one of the people who have really helped me succeed in this field.',
+              },
+              {
+                name: 'Brandon Chuck',
+                role: 'Software Engineer',
+                linkedin: 'https://www.linkedin.com/in/brandonchuck/',
+                quote: 'I first met Trevor in a software development mentorship program as one of the personal coaches. I was just starting off in my software development journey and I was met with kindness, patience, and a tailored approach to teaching the complex world of software development. Trevor has an undeniable grasp of the fundamentals and is passionate about transferring his knowledge to his students. Throughout the mentorship program, Trevor reenforced more than just design patterns, best practices, and organizational techniques. He always put an emphasis on gaining a deeper understanding of fundamentals like debugging, functional organization, and readability, ultimately helping us construct a developer mindset. Looking back at the program now a year and a half later, big picture concepts were also something Trevor sought to help us understand which has always stuck with me. I was encouraged to solve the same problem in different ways, work collaboratively, and breakdown problems into logical pieces before ever touching the keyboard. With his guidance and teachings I felt confident and prepared to step into my first software developer role after completing the program.',
+              },
+              {
+                name: 'Gregory Hilger',
+                role: 'Full Stack Software Developer JS | React | C# | .Net',
+                linkedin: 'https://www.linkedin.com/in/gregoryhilger/',
+                quote: 'I had the pleasure of working with Trevor through the SDMM online program, and I cannot speak highly enough about his expertise and friendliness. His lessons were insightful and engaging, making complex coding concepts feel accessible to beginners like me. Throughout the program Trevor showed a dedication and passion for helping others grow their skills. He always provided clear and concise explanations and would review my coding projects, offering constructive feedback that helped me learn and succeed in the program. Trevor was always knowledgeable and yet so down-to-earth, making the experience very enjoyable. I am grateful for the opportunity to learn from Trevor and I wholeheartedly recommend him as a mentor in the world of programming.',
+              },
             ].map((testimonial, idx) => (
-              <div key={idx} className="bg-white dark:bg-dark-card rounded-xl p-6 border border-gray-200 dark:border-dark-border shadow-sm">
+              <div key={idx} className="bg-white dark:bg-dark-card rounded-xl p-6 border border-gray-200 dark:border-dark-border shadow-sm flex flex-col">
                 <div className="flex text-yellow-400 mb-4">
                   {[1, 2, 3, 4, 5].map((s) => (
                     <svg key={s} className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -559,12 +574,23 @@ export default function Home() {
                     </svg>
                   ))}
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 italic leading-relaxed">
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 italic leading-relaxed flex-1">
                   &ldquo;{testimonial.quote}&rdquo;
                 </p>
-                <div>
+                <div className="mt-auto">
                   <p className="font-semibold text-gray-900 dark:text-white text-sm">{testimonial.name}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{testimonial.role}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">{testimonial.role}</p>
+                  <a
+                    href={testimonial.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-white bg-[#0A66C2] hover:bg-[#004182] px-3 py-1.5 rounded-md transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                    </svg>
+                    View on LinkedIn
+                  </a>
                 </div>
               </div>
             ))}
