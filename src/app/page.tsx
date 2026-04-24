@@ -674,7 +674,7 @@ export default function Home() {
           </div>
 
           <form
-            action="mailto:support@signalworks.com"
+            action="mailto:trevor-sensei@signalworksdesign.com"
             method="post"
             encType="text/plain"
             className="max-w-xl mx-auto bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20"

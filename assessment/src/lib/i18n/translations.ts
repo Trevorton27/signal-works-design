@@ -136,7 +136,7 @@ export const translations = {
     'home.finalCtaTitle': 'Let\'s Talk About Your Goals',
     'home.finalCtaSubtitle': 'Get in touch to schedule a free consultation. We\'ll discuss your background, your goals, and whether this program is the right fit — no pressure, no commitment.',
     'home.finalCtaButton': 'Schedule a Free Consultation',
-    'home.finalCtaSecondary': 'Prefer email? Reach us at support@signalworks.com',
+    'home.finalCtaSecondary': 'Prefer email? Reach us at trevor-sensei@signalworksdesign.com',
 
     // About Section
     'home.aboutTitle': 'About Signal Works LMS',
@@ -297,7 +297,7 @@ export const translations = {
     'home.footerTestimonials': 'Testimonials',
     'home.footerFAQ': 'FAQ',
     'home.footerContact': 'Contact',
-    'home.footerSupport': 'support@signalworks.com',
+    'home.footerSupport': 'trevor-sensei@signalworksdesign.com',
     'home.footerCommunity': 'Join our community',
     'home.footerCopyright': '© 2024 Signal Works LMS. All rights reserved.',
 
@@ -1075,7 +1075,7 @@ export const translations = {
     'home.finalCtaTitle': 'まずはお気軽にご相談ください',
     'home.finalCtaSubtitle': '無料相談をご予約いただけます。あなたのご経歴・目標を伺い、本プログラムが最適かどうかを一緒に確認します。プレッシャーも契約も不要です。',
     'home.finalCtaButton': '無料相談を予約する',
-    'home.finalCtaSecondary': 'メールでのお問い合わせ：support@signalworks.com',
+    'home.finalCtaSecondary': 'メールでのお問い合わせ：trevor-sensei@signalworksdesign.com',
 
     // About Section
     'home.aboutTitle': 'Signal Works LMSについて',
@@ -1236,7 +1236,7 @@ export const translations = {
     'home.footerTestimonials': '体験談',
     'home.footerFAQ': 'よくある質問',
     'home.footerContact': 'お問い合わせ',
-    'home.footerSupport': 'support@signalworks.com',
+    'home.footerSupport': 'trevor-sensei@signalworksdesign.com',
     'home.footerCommunity': 'コミュニティに参加',
     'home.footerCopyright': '© 2024 Signal Works LMS. All rights reserved.',
 
