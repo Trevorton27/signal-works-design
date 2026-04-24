@@ -55,7 +55,7 @@ export const translations = {
     'home.heroTitle': 'Master AI-Powered Web Development. Transform Your Career.',
     'home.heroSubtitle': 'A premium hybrid learning experience combining expert instructors with adaptive AI — built for the next generation of bilingual developers.',
     'home.heroSupporting': 'Whether you are entering tech for the first time or sharpening existing skills, our two-stage assessment and personalized roadmap give you a clear, structured path to real-world results.',
-    'home.heroCta': 'Start Your Free Assessment',
+    'home.heroCta': 'Book a Free Consultation',
     'home.heroCtaSecondary': 'See How It Works',
     'home.browseCourses': 'Browse Courses',
     'home.tryAssessment': 'Try Assessment',
@@ -130,7 +130,7 @@ export const translations = {
     'home.pricingBonusLabel': 'Bonus:',
     'home.pricingBonus1': 'Free initial assessment session',
     'home.pricingBonus2': 'Lifetime access to your personalized roadmap',
-    'home.pricingCta': 'Reserve Your Assessment',
+    'home.pricingCta': 'Book a Free Consultation',
 
     // Final CTA
     'home.finalCtaTitle': 'Let\'s Talk About Your Goals',
@@ -994,7 +994,7 @@ export const translations = {
     'home.heroTitle': 'AI時代のWeb開発スキルを習得し、キャリアを次のステージへ。',
     'home.heroSubtitle': '経験豊富な講師の指導と、最新のAI学習ツールを融合したプレミアムな学習体験。バイリンガル人材として世界で活躍するための実践的なカリキュラムです。',
     'home.heroSupporting': '未経験からのキャリアチェンジでも、現役エンジニアのスキルアップでも対応可能。2段階のアセスメントとパーソナライズされたロードマップで、明確で再現性のある学習プロセスを提供します。',
-    'home.heroCta': '無料アセスメントを開始',
+    'home.heroCta': '無料相談を予約する',
     'home.heroCtaSecondary': '仕組みを見る',
     'home.browseCourses': 'コースを見る',
     'home.tryAssessment': '評価を試す',
@@ -1069,7 +1069,7 @@ export const translations = {
     'home.pricingBonusLabel': 'ボーナス特典：',
     'home.pricingBonus1': '無料初回アセスメントセッション',
     'home.pricingBonus2': 'パーソナライズドロードマップへの永続アクセス',
-    'home.pricingCta': 'アセスメントを予約する',
+    'home.pricingCta': '無料相談を予約する',
 
     // Final CTA
     'home.finalCtaTitle': 'まずはお気軽にご相談ください',

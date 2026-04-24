@@ -54,7 +54,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href={`${ASSESSMENT_URL}/assessment/intake`}
+              href="#contact"
               className="px-8 py-4 bg-white text-indigo-700 rounded-lg font-bold hover:bg-indigo-50 transition shadow-lg"
             >
               {t('home.heroCta')}
@@ -675,7 +675,7 @@ export default function Home() {
             </div>
 
             <a
-              href={`${ASSESSMENT_URL}/assessment/intake`}
+              href="#contact"
               className="block w-full text-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-bold hover:from-indigo-700 hover:to-purple-700 transition shadow-lg"
             >
               {t('home.pricingCta')}
