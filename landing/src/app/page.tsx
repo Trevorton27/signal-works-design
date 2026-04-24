@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
@@ -7,6 +8,29 @@ const ASSESSMENT_URL = process.env.NEXT_PUBLIC_ASSESSMENT_URL || '';
 
 export default function Home() {
   const { t } = useLanguage();
+  const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  async function handleContactSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setFormStatus('loading');
+    const form = e.currentTarget;
+    const data = {
+      name: (form.elements.namedItem('name') as HTMLInputElement).value,
+      email: (form.elements.namedItem('email') as HTMLInputElement).value,
+      phone: (form.elements.namedItem('phone') as HTMLInputElement).value,
+      message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
+    };
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      setFormStatus(res.ok ? 'success' : 'error');
+    } catch {
+      setFormStatus('error');
+    }
+  }
 
   return (
     <main className="min-h-screen bg-white dark:bg-black">
@@ -674,10 +698,14 @@ export default function Home() {
             </p>
           </div>
 
+          {formStatus === 'success' ? (
+            <div className="max-w-xl mx-auto bg-white/10 backdrop-blur-sm rounded-2xl p-10 border border-white/20 text-center">
+              <p className="text-xl font-semibold text-white mb-2">Message sent!</p>
+              <p className="text-indigo-200">Thanks for reaching out. Trevor will get back to you soon.</p>
+            </div>
+          ) : (
           <form
-            action="mailto:trevor-sensei@signalworksdesign.com"
-            method="post"
-            encType="text/plain"
+            onSubmit={handleContactSubmit}
             className="max-w-xl mx-auto bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20"
           >
             <div className="grid md:grid-cols-2 gap-4 mb-4">
@@ -729,16 +757,21 @@ export default function Home() {
                 className="w-full px-4 py-2.5 rounded-lg bg-white/90 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white resize-none"
               />
             </div>
+            {formStatus === 'error' && (
+              <p className="text-red-300 text-sm mb-3 text-center">Something went wrong. Please try again.</p>
+            )}
             <button
               type="submit"
-              className="w-full px-8 py-4 bg-white text-indigo-700 rounded-lg font-bold hover:bg-indigo-50 transition shadow-xl text-lg"
+              disabled={formStatus === 'loading'}
+              className="w-full px-8 py-4 bg-white text-indigo-700 rounded-lg font-bold hover:bg-indigo-50 transition shadow-xl text-lg disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {t('home.finalCtaButton')}
+              {formStatus === 'loading' ? 'Sending...' : t('home.finalCtaButton')}
             </button>
             <p className="text-center text-indigo-200 text-sm mt-4">
               {t('home.finalCtaSecondary')}
             </p>
           </form>
+          )}
         </div>
       </section>
 
