@@ -519,7 +519,7 @@ export default function Home() {
                   />
                 </div>
               </div>
-              <div className="flex-shrink-0 md:hidden">
+              <div className="flex-shrink-0 md:hidden flex justify-center">
                 <div className="relative w-56 h-56 rounded-2xl overflow-hidden shadow-2xl ring-4 ring-indigo-200 dark:ring-indigo-800">
                   <Image
                     src="/trevor-profile.png"
