@@ -37,7 +37,7 @@ export default function Home() {
       {/* ============================================ */}
       {/* 1. HERO SECTION */}
       {/* ============================================ */}
-      <section id="home" className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 dark:from-purple-900 dark:via-indigo-900 dark:to-purple-950 text-white py-24 md:py-32 overflow-hidden">
+      <section id="home" className="relative bg-black text-white py-24 md:py-32 overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
         <div className="container mx-auto px-4 text-center relative z-10">
           <span className="inline-block px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm font-medium mb-6">
