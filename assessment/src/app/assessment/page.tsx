@@ -351,7 +351,7 @@ export default function IntakeAssessmentPage() {
                   }}
                   className="flex-1 px-4 py-2 border border-gray-300 dark:border-dark-border text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-hover font-medium transition"
                 >
-                  View results anyway
+                  Submit answers anyway
                 </button>
               </div>
             </div>

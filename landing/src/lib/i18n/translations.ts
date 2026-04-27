@@ -52,7 +52,7 @@ export const translations = {
 
     // Home Page
     'home.heroBadge': 'Bilingual · Instructor-Led · AI-Powered',
-    'home.heroTitle': 'Master AI-Powered Web Development. Transform Your Career.',
+    'home.heroTitle': 'Master AI-Powered Software Development. Transform Your Career.',
     'home.heroSubtitle': 'A premium hybrid learning experience combining expert instructors with adaptive AI — built for the next generation of bilingual developers.',
     'home.heroSupporting': 'Whether you are entering tech for the first time or sharpening existing skills, our two-stage assessment and personalized roadmap give you a clear, structured path to real-world results.',
     'home.heroCta': 'Book a Free Consultation',
