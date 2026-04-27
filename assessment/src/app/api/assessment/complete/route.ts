@@ -14,7 +14,13 @@ import { logger } from '@/lib/logger';
  */
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    let body: Record<string, unknown>;
+    try {
+      const raw = await req.text();
+      body = JSON.parse(raw);
+    } catch {
+      return NextResponse.json({ success: false, error: 'Invalid or empty JSON body' }, { status: 400 });
+    }
 
     const { name, email, score, level, summary, strengths, weaknesses, recommendations } =
       body as StudentEmailPayload;
