@@ -1,5 +1,5 @@
 // Intermediate test script — paste into browser console at localhost:3000/assessment (or :3003)
-// Profile: some HTML/CSS/JS experience, no frameworks, partial understanding of concepts
+// Profile: knows HTML/CSS/JS basics, built a couple of small projects, no frameworks or backend
 // Expected score: 40–59% (Developing level)
 // Run AFTER signing in. Resets sessions AND skill masteries so prior runs don't inflate score.
 // When done, click "Submit answers" manually on the summary page.
@@ -17,64 +17,64 @@
 
   var answers = {
     background_experience: {
-      code_experience: 'Yes — I have written some HTML and CSS and basic JavaScript from tutorials.',
-      skill_level: 'beginner', // self-reports lower than actual partial ability
-      projects_built: 'A static webpage for a school project. Nothing with real functionality.',
-      computer_comfort: 'somewhat_comfortable',
+      code_experience: 'Yes — I have written HTML, CSS, and JavaScript. I built a few static websites and a simple to-do app following a tutorial.',
+      skill_level: 'some_experience',
+      projects_built: 'A personal portfolio website and a to-do list app in vanilla JavaScript. Nothing with a backend.',
+      computer_comfort: 'somewhat', // valid: not_comfortable | somewhat | comfortable | very_comfortable
       learning_goal: 'career_change',
     },
     technical_understanding_concepts: {
-      // Partially correct — knows the word but explanation is shallow
-      answer: 'A function is like a little block of code that does something. You write it once and use it again. I think you can give it a value and it gives something back.',
+      // Scores 2/3 — explains reusability and inputs/outputs but no deep abstraction
+      answer: 'A function is a reusable block of code that you can call whenever you need it. You can pass values into it and it can return a result. It helps avoid repeating the same code in multiple places.',
     },
     technical_frontend_backend: {
-      // Surface-level — knows the terms, misses the depth
-      answer: 'Frontend is the visual stuff you see on a website, like buttons and menus. Backend is where the data is stored, I think. I am not really sure how they communicate.',
+      // Scores 2/3 — distinguishes both clearly but no specific framework examples
+      answer: 'Frontend is everything the user sees and interacts with in the browser, like buttons, forms, and layouts built with HTML, CSS, and JavaScript. Backend is the server side that handles data storage, business logic, and sending responses to the frontend. I have only worked on the frontend so far.',
     },
     technical_api_experience: {
-      // Has heard of it, followed a tutorial once but does not really understand
-      answer: 'I have seen APIs mentioned in tutorials. I once copy-pasted some code that fetched weather data but I did not fully understand what it was doing.',
+      // Scores 2/3 — gives a real example, basic fetch usage, doesn't show deep understanding
+      answer: 'Yes, I have used the fetch function in JavaScript to call a weather API and display the temperature on a webpage. I passed in a URL and read the response as JSON. I am not sure about authentication or how headers work.',
     },
     technical_debugging: {
-      // Limited debugging — only console.log, no systematic approach
-      answer: 'I usually add console.log everywhere and look at the browser console. If that does not work I Google the error message and hope one of the Stack Overflow answers works.',
+      // Scores 2/3 — describes a real process, not fully methodical
+      answer: 'I start by reading the error in the browser console. Then I add console.log statements around the area I think is broken to see what values I am working with. If I am still stuck, I search the error message on Google or Stack Overflow.',
     },
     technical_databases_git: {
-      database_familiarity: 'none',
-      git_experience: 'I have used Git a little. I know how to commit and push to GitHub but I get confused with branches and merging.',
+      database_familiarity: 'basic', // valid: none | basic | moderate | advanced
+      git_experience: 'Yes, I use Git for my projects. I know how to initialize a repo, add, commit, and push to GitHub. I have used branches a couple of times but I get confused with merge conflicts.',
     },
     problem_solving_approach: {
-      // Vague — some instinct but no real system
-      answer: 'I usually just start trying things and see what happens. Sometimes I read through the code to find where it might be going wrong, but I do not have a set process.',
+      // Scores 2/3 — structured but not fully methodical
+      answer: 'I try to understand what the problem is asking before I start. Then I break it into smaller steps and work through each one. If I get stuck I look at similar examples online or re-read the documentation.',
     },
     problem_solving_confusion: {
-      // Looks things up but relies heavily on copying answers
-      answer: 'I search YouTube or Google for an explanation. I try to find someone who had the same problem and copy their solution. I do not always understand why it works.',
+      // Scores 2/3 — looks things up but relies on copying solutions
+      answer: 'I search for a different explanation, usually on YouTube or MDN. Sometimes I find a Stack Overflow answer that matches my problem and adapt it. I do not always fully understand why the solution works.',
     },
     problem_solving_style: {
-      guidance_preference: 'semi_guided',
-      decomposition_comfort: 'somewhat_comfortable',
+      guidance_preference: 'mix', // valid: step_by_step | independent | mix
+      decomposition_comfort: 'somewhat', // valid: not_comfortable | somewhat | comfortable | very_comfortable
     },
     problem_solving_story: {
-      // Has a real (but small) experience
-      answer: 'I once could not get a CSS layout to look right on mobile. I kept changing numbers randomly until something worked. I later found out about flexbox and that would have helped a lot.',
+      // Has a real but small experience
+      answer: 'I was building a to-do app and my delete button was removing the wrong item from the list. I used console.log to print the index each time the button was clicked and realized I had an off-by-one error in my array. Fixing the index solved it.',
     },
     learning_style_preferences: {
-      learning_method: 'watching',
+      learning_method: 'doing', // valid: watching | reading | doing | mix
       structure_preference: 'structured',
-      repetition_attitude: 'I need to see examples multiple times before I feel comfortable using something myself.',
+      repetition_attitude: 'Repetition helps me remember syntax and patterns. I usually practice new concepts several times before I feel comfortable using them.',
       motivation_source: 'clear_goals',
     },
     interests_preferences: {
       primary_interest: ['business_tools', 'automation'],
-      app_excitement: 'A tool that helps me organize my tasks automatically.',
+      app_excitement: 'A tool that automates repetitive tasks for small businesses.',
       industry_interests: 'Small business and e-commerce.',
       work_preference: 'visual',
     },
     commitment_goals: {
-      weekly_hours: '5_10',
+      weekly_hours: '10_20',
       target_timeline: '6_12_months',
-      success_definition: 'Be able to build a simple web app on my own without following a tutorial step by step.',
+      success_definition: 'Be able to build a complete web app on my own — frontend and backend — without following a tutorial step by step.',
     },
   };
 
