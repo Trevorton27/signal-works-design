@@ -186,7 +186,7 @@ export default function SummaryStep({ sessionId, onComplete }: Props) {
               {submitState === 'submitting' && (
                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
               )}
-              {submitState === 'submitting' ? 'Sending results…' : 'Submit answers'}
+              {submitState === 'submitting' ? 'Compiling results…' : 'Submit answers'}
             </button>
           </div>
         </div>
