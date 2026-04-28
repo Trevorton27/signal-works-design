@@ -3,7 +3,12 @@
  */
 
 import PDFDocument from 'pdfkit';
-import type { GeneratedRoadmap, RoadmapProject } from './roadmapService';
+import type { GeneratedRoadmap, RoadmapProject, RoadmapResource } from './roadmapService';
+
+function resourceLabel(r: RoadmapResource | string): string {
+  if (typeof r === 'string') return r;
+  return r.url ? `${r.title} — ${r.url}` : r.title;
+}
 
 export async function generateRoadmapPdf(
   studentName: string,
@@ -85,7 +90,7 @@ export async function generateRoadmapPdf(
         doc.fillColor(GRAY).fontSize(9).font('Helvetica-Bold').text('RESOURCES');
         phase.suggestedResources.forEach((res) => {
           doc.fillColor(PURPLE).fontSize(10).font('Helvetica')
-            .text(`• ${res}`, { indent: 12, width: PAGE_WIDTH - 12, lineGap: 2 });
+            .text(`• ${resourceLabel(res)}`, { indent: 12, width: PAGE_WIDTH - 12, lineGap: 2 });
         });
       }
 

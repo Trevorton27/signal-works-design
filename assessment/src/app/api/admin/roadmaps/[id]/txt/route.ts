@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth';
-import type { RoadmapPhase, RoadmapProject } from '@/server/assessment/roadmapService';
+import type { RoadmapPhase, RoadmapProject, RoadmapResource } from '@/server/assessment/roadmapService';
+
+function resourceLine(r: RoadmapResource | string): string {
+  if (typeof r === 'string') return r;
+  return r.url ? `${r.title} — ${r.url}` : r.title;
+}
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   await requireAdmin();
@@ -66,7 +71,7 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
     if (phase.suggestedResources?.length) {
       lines.push('');
       lines.push('Resources:');
-      phase.suggestedResources.forEach((r) => lines.push(`  • ${r}`));
+      phase.suggestedResources.forEach((r) => lines.push(`  • ${resourceLine(r)}`));
     }
 
     if (phase.capstoneProject) {

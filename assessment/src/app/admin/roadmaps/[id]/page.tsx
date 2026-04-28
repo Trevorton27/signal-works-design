@@ -1,8 +1,13 @@
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import type { RoadmapPhase, RoadmapProject } from '@/server/assessment/roadmapService';
+import type { RoadmapPhase, RoadmapProject, RoadmapResource } from '@/server/assessment/roadmapService';
 import DeleteRoadmapButton from './DeleteRoadmapButton';
+
+function normalizeResource(r: RoadmapResource | string): { title: string; url: string | null } {
+  if (typeof r === 'string') return { title: r, url: null };
+  return { title: r.title, url: r.url || null };
+}
 
 export const dynamic = 'force-dynamic';
 
@@ -126,11 +131,21 @@ export default async function RoadmapDetailPage({ params }: { params: { id: stri
                 <div>
                   <div className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Resources</div>
                   <ul className="space-y-1">
-                    {phase.suggestedResources.map((r, j) => (
-                      <li key={j} className="text-sm text-indigo-600 flex gap-2">
-                        <span className="shrink-0">•</span> {r}
-                      </li>
-                    ))}
+                    {phase.suggestedResources.map((r, j) => {
+                      const res = normalizeResource(r);
+                      return (
+                        <li key={j} className="text-sm text-indigo-600 flex gap-2">
+                          <span className="shrink-0">•</span>
+                          {res.url ? (
+                            <a href={res.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                              {res.title}
+                            </a>
+                          ) : (
+                            res.title
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}

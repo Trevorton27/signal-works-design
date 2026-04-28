@@ -11,12 +11,17 @@ import { logger } from '@/lib/logger';
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const MODEL = process.env.AI_TUTOR_MODEL || 'claude-sonnet-4-6';
 
+export interface RoadmapResource {
+  title: string;
+  url: string;
+}
+
 export interface RoadmapPhase {
   phase: string;
   duration: string;
   focus: string;
   goals: string[];
-  suggestedResources: string[];
+  suggestedResources: (RoadmapResource | string)[];
   capstoneProject?: string;
 }
 
@@ -79,6 +84,8 @@ Also generate exactly 5 projects the student should build during the course:
 - Projects 1-4: progressively more complex, each building on the previous, aligned to the student's interests and the phase curriculum
 - Project 5: a comprehensive AI-powered capstone that integrates everything learned, is the most ambitious of the 5, and is directly tied to their interests/goals
 
+For suggestedResources, include 2-4 real, specific learning resources per phase. Each resource must be a real website or course that actually exists — use well-known platforms such as freeCodeCamp, MDN Web Docs, The Odin Project, Coursera, Udemy, YouTube, official docs (react.dev, nextjs.org, docs.python.org, etc.), or similar. Include the real, correct URL for each resource.
+
 Respond with ONLY valid JSON in this exact shape:
 {
   "summary": "One sentence overview of this student's path",
@@ -89,7 +96,9 @@ Respond with ONLY valid JSON in this exact shape:
       "duration": "e.g. 3-4 weeks",
       "focus": "Main skill area",
       "goals": ["Goal 1", "Goal 2", "Goal 3"],
-      "suggestedResources": ["Resource 1", "Resource 2"],
+      "suggestedResources": [
+        { "title": "Resource name", "url": "https://example.com/path" }
+      ],
       "capstoneProject": "Optional project idea tied to their interests"
     }
   ],
@@ -108,7 +117,7 @@ Respond with ONLY valid JSON in this exact shape:
   try {
     const message = await client.messages.create({
       model: MODEL,
-      max_tokens: 4000,
+      max_tokens: 5000,
       messages: [{ role: 'user', content: prompt }],
     });
 
