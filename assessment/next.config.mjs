@@ -5,6 +5,13 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '2mb',
     },
+    // pdfkit dynamically loads AFM font files from node_modules at runtime.
+    // Without this, Next.js's output file tracing omits them and pdfkit fails on Vercel.
+    outputFileTracingIncludes: {
+      '/api/admin/roadmaps/[id]/pdf': [
+        './node_modules/pdfkit/js/data/**/*',
+      ],
+    },
   },
   images: {
     domains: [],
