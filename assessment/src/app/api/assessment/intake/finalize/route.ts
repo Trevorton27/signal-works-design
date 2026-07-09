@@ -93,6 +93,7 @@ export async function POST() {
     // Extract personalisation fields from questionnaire responses
     const backgroundRaw = (session.responses.find((r) => r.stepId === 'background_experience')?.rawAnswer as any) ?? {};
     const learningGoal: string | undefined = backgroundRaw?.learning_goal;
+    const preferredLanguage: 'en' | 'ja' = backgroundRaw?.preferred_language === 'ja' ? 'ja' : 'en';
 
     const interestsRaw = (session.responses.find((r) => r.stepId === 'interests_preferences')?.rawAnswer as any) ?? {};
     const primaryInterests: string[] = Array.isArray(interestsRaw?.primary_interest) ? interestsRaw.primary_interest : [];
@@ -123,6 +124,7 @@ export async function POST() {
       aiMotivation,
       weeklyHours,
       learningStyle,
+      language: preferredLanguage,
     });
 
     if (!roadmap) {
@@ -147,6 +149,7 @@ export async function POST() {
             sessionId: session.id,
             level,
             score: overallPct,
+            language: preferredLanguage,
             summary: roadmap.summary,
             totalDuration: roadmap.totalDuration,
             firstStep: roadmap.firstStep,
@@ -156,6 +159,7 @@ export async function POST() {
           update: {
             level,
             score: overallPct,
+            language: preferredLanguage,
             summary: roadmap.summary,
             totalDuration: roadmap.totalDuration,
             firstStep: roadmap.firstStep,
@@ -175,7 +179,7 @@ export async function POST() {
     let roadmapPdf: Buffer | undefined;
     if (roadmap) {
       try {
-        roadmapPdf = await generateRoadmapPdf(dbUser.name || 'Student', roadmap, overallPct);
+        roadmapPdf = await generateRoadmapPdf(dbUser.name || 'Student', roadmap, overallPct, preferredLanguage);
         logger.info('finalize: roadmap PDF generated', { userId: user.id, bytes: roadmapPdf.length });
       } catch (pdfErr) {
         logger.error('finalize: failed to generate roadmap PDF', pdfErr, { userId: user.id });

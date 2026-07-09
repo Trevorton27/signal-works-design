@@ -52,6 +52,7 @@ export interface RoadmapInput {
   aiMotivation?: string;
   weeklyHours?: string;
   learningStyle?: string;
+  language?: 'en' | 'ja';
 }
 
 export async function editRoadmapWithAI(
@@ -131,6 +132,10 @@ export async function generateRoadmap(input: RoadmapInput): Promise<GeneratedRoa
     ? `Available study time: ${input.weeklyHours} hours/week`
     : '';
 
+  const languageInstruction = input.language === 'ja'
+    ? '\n\nIMPORTANT: Write ALL content in Japanese (日本語). This includes phase names, goals, project titles, descriptions, skill labels, the summary, firstStep, and capstoneProject fields. Keep URLs unchanged. Keep technical product names (GitHub, VS Code, Node.js, React, etc.) in their original English form.'
+    : '';
+
   const prompt = `You are a senior software engineering educator. Based on the student profile below, generate a personalized phased learning roadmap for AI-powered software development.
 
 STUDENT PROFILE:
@@ -151,6 +156,8 @@ Also generate exactly 5 projects the student should build during the course:
 - Project 5: a comprehensive AI-powered capstone that integrates everything learned, is the most ambitious of the 5, and is directly tied to their interests/goals
 
 For suggestedResources, include 2-4 real, specific learning resources per phase. Each resource must be a real website or course that actually exists — use well-known platforms such as freeCodeCamp, MDN Web Docs, The Odin Project, Coursera, Udemy, YouTube, official docs (react.dev, nextjs.org, docs.python.org, etc.), or similar. Include the real, correct URL for each resource.
+
+${languageInstruction}
 
 Respond with ONLY valid JSON in this exact shape:
 {

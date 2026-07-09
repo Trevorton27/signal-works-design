@@ -700,6 +700,7 @@ model AssessmentRoadmap {
   generatedAt   DateTime          @default(now())
   level         String
   score         Int
+  language      String            @default("en")
   summary       String
   totalDuration String
   firstStep     String

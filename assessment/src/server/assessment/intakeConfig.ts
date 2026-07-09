@@ -240,6 +240,16 @@ export const INTAKE_STEPS: IntakeStepConfig[] = [
           { value: 'other', label: 'Other' },
         ],
       },
+      {
+        id: 'preferred_language',
+        type: 'select',
+        label: 'Preferred language for your roadmap / ロードマップの言語',
+        required: true,
+        options: [
+          { value: 'en', label: 'English' },
+          { value: 'ja', label: '日本語 (Japanese)' },
+        ],
+      },
     ],
   } as QuestionnaireStepConfig,
 
