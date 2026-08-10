@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import ConsultationForm from '@/modules/consultation/ConsultationForm';
 
 const SERVICES = [
   {
@@ -155,15 +156,15 @@ export default function ServicesPage() {
               ? 'モダンなウェブデザインとAI技術を組み合わせ、関西の中小企業をデジタルで成長させます。英語・日本語完全対応。'
               : 'Modern web design meets practical AI. Helping Kansai small businesses grow online — in English and Japanese.'}
           </p>
-          <Link
-            href="/consultation/book"
+          <a
+            href="#consultation-form"
             className="inline-flex items-center gap-2 px-8 py-4 bg-white text-indigo-700 font-bold rounded-xl hover:bg-indigo-50 transition shadow-lg text-base"
           >
             {ja ? '無料相談を予約する' : 'Book a Free Consultation'}
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </Link>
+          </a>
         </div>
       </section>
 
@@ -246,12 +247,12 @@ export default function ServicesPage() {
                       </li>
                     ))}
                   </ul>
-                  <Link
-                    href="/consultation/book"
+                  <a
+                    href="#consultation-form"
                     className={`block text-center py-3 px-4 rounded-xl font-semibold text-sm bg-gradient-to-r ${pkg.color} text-white hover:opacity-90 transition`}
                   >
                     {ja ? pkg.cta.ja : pkg.cta.en}
-                  </Link>
+                  </a>
                 </div>
               </div>
             ))}
@@ -399,12 +400,12 @@ export default function ServicesPage() {
               : 'Free 30-minute consultation. No commitment, no hard sell — just honest advice for your business.'}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/consultation/book"
+            <a
+              href="#consultation-form"
               className="px-8 py-4 bg-white text-indigo-700 font-bold rounded-xl hover:bg-indigo-50 transition shadow-lg"
             >
               {ja ? '無料相談を予約する' : 'Book a Free Consultation'}
-            </Link>
+            </a>
             <Link
               href="/"
               className="px-8 py-4 border-2 border-white/40 text-white font-semibold rounded-xl hover:bg-white/10 transition"
@@ -414,6 +415,9 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+
+      {/* Consultation Form */}
+      <ConsultationForm />
 
     </div>
   );
